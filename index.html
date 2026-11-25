@@ -3,420 +3,357 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nongcebo & Moira — Sanctuary</title>
+  <title>Nongcebo & Moira — The Sanctuary</title>
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-page: #f3efe6;
-      --bg-card: #fcfaf5;
-      --primary: #2d4236;
-      --primary-hover: #1f2e25;
-      --nongcebo-bg: #fbf2e6;
-      --nongcebo-accent: #c86d2d;
-      --moira-bg: #ebf1f5;
-      --moira-accent: #2c5e7a;
-      --text-main: #242422;
-      --text-muted: #6b6860;
-      --border-soft: #e3ddd0;
+      --bg-canvas: #f6f3ec;
+      --bg-surface: #fdfbf7;
+      --ink-primary: #1e2421;
+      --ink-muted: #5f6662;
+      --forest: #243b31;
+      --forest-hover: #182922;
+      --nongcebo-bg: #faf0e4;
+      --nongcebo-line: #b86228;
+      --moira-bg: #eaf0f4;
+      --moira-line: #285570;
+      --border: #dfd8ca;
     }
 
     * { box-sizing: border-box; }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: radial-gradient(circle at top, #f8f5ed 0%, var(--bg-page) 100%);
-      color: var(--text-main);
       margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 16px;
     }
 
-    .app-shell {
-      width: 100%;
-      max-width: 700px;
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 32px);
-      max-height: 860px;
-      background: var(--bg-card);
-      border-radius: 24px;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 20px 50px rgba(45, 66, 54, 0.08);
-      overflow: hidden;
-    }
-
+    /* Spacious Top Navigation */
     header {
-      padding: 20px 24px 16px;
-      text-align: center;
-      border-bottom: 1px solid var(--border-soft);
-      background: rgba(252, 250, 245, 0.9);
-    }
-
-    .avatars {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 28px;
       display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .badge {
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      letter-spacing: 0.4px;
-    }
-
-    .badge-n { background: var(--nongcebo-bg); color: var(--nongcebo-accent); border: 1px solid rgba(200, 109, 45, 0.25); }
-    .badge-m { background: var(--moira-bg); color: var(--moira-accent); border: 1px solid rgba(44, 94, 122, 0.25); }
-
-    h1 {
-      font-family: 'Lora', serif;
-      font-size: 1.65rem;
-      font-weight: 600;
-      color: var(--primary);
-      margin: 0;
-      letter-spacing: -0.3px;
-    }
-
-    .subtitle {
-      font-family: 'Lora', serif;
-      font-style: italic;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin: 4px 0 0;
-    }
-
-    #api-bar {
-      display: flex;
-      gap: 8px;
-      padding: 10px 20px;
-      background: #f5f1e8;
-      border-bottom: 1px solid var(--border-soft);
+      flex-wrap: wrap;
+      justify-content: space-between;
       align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
-    #api-bar input {
-      flex: 1;
-      padding: 8px 12px;
-      border: 1px solid var(--border-soft);
+    .brand h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin: 0;
+      color: var(--forest);
+      letter-spacing: -0.4px;
+    }
+
+    .brand p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ink-muted);
+      margin: 2px 0 0;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar input {
+      padding: 9px 14px;
+      border: 1px solid var(--border);
       border-radius: 10px;
       font-size: 0.85rem;
       background: #fff;
-      color: var(--text-main);
+      width: 220px;
+      color: var(--ink-primary);
     }
 
-    #api-bar button {
-      padding: 8px 12px;
-      font-size: 0.8rem;
-      background: transparent;
-      color: var(--text-muted);
-      border: 1px solid var(--border-soft);
+    .pill-btn {
+      padding: 9px 14px;
       border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--ink-primary);
+      font-size: 0.82rem;
+      font-weight: 500;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
-    #chat {
+    .pill-btn:hover { background: var(--bg-canvas); }
+    .pill-btn.active { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+    /* Expansive Conversation Space */
+    main {
       flex: 1;
-      overflow-y: auto;
-      padding: 24px 20px;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px 140px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      scroll-behavior: smooth;
+      gap: 24px;
     }
 
-    .welcome-card {
+    .welcome-hero {
       text-align: center;
-      padding: 24px 18px;
-      margin: auto 0;
-      color: var(--text-muted);
+      padding: 48px 20px;
+      max-width: 680px;
+      margin: 20px auto;
     }
 
-    .welcome-card p {
-      font-family: 'Lora', serif;
-      font-size: 1.05rem;
-      line-height: 1.6;
-      max-width: 460px;
-      margin: 0 auto 16px;
-      color: var(--text-main);
+    .welcome-hero h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 12px;
     }
 
-    .starters {
+    .welcome-hero p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink-muted);
+      margin-bottom: 28px;
+    }
+
+    .prompts-grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .starter-btn {
-      background: #fff;
-      border: 1px solid var(--border-soft);
-      color: var(--primary);
-      padding: 8px 14px;
+    .prompt-chip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
+      color: var(--forest);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
 
-    .starter-btn:hover {
-      background: var(--primary);
+    .prompt-chip:hover {
+      background: var(--forest);
       color: #fff;
-      border-color: var(--primary);
+      border-color: var(--forest);
     }
 
-    .msg {
-      padding: 15px 18px;
+    /* Message Cards */
+    .entry {
+      padding: 22px 26px;
       border-radius: 18px;
-      max-width: 85%;
-      line-height: 1.6;
-      font-size: 0.95rem;
-      animation: fadeUp 0.35s ease forwards;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      line-height: 1.75;
+      font-size: 1.02rem;
+      max-width: 88%;
+      animation: rise 0.4s ease forwards;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .user {
-      background: var(--primary);
+    .entry.user {
+      background: var(--forest);
       color: #fff;
       align-self: flex-end;
       border-bottom-right-radius: 4px;
+      max-width: 75%;
     }
 
-    .nongcebo {
+    .entry.nongcebo {
       background: var(--nongcebo-bg);
-      border-left: 4px solid var(--nongcebo-accent);
+      border-left: 4px solid var(--nongcebo-line);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
     }
 
-    .moira {
+    .entry.moira {
       background: var(--moira-bg);
-      border-left: 4px solid var(--moira-accent);
+      border-left: 4px solid var(--moira-line);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
     }
 
-    .sender-tag {
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+    .entry-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
     }
 
-    .nongcebo .sender-tag { color: var(--nongcebo-accent); }
-    .moira .sender-tag { color: var(--moira-accent); }
+    .persona-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
 
-    .typing {
-      font-family: 'Lora', serif;
+    .nongcebo .persona-name { color: var(--nongcebo-line); }
+    .moira .persona-name { color: var(--moira-line); }
+
+    .speak-mini {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: var(--ink-primary);
+    }
+
+    .status-line {
+      font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      padding: 8px 14px;
-      align-self: flex-start;
-      animation: pulse 1.5s infinite;
+      font-size: 1.15rem;
+      color: var(--ink-muted);
+      padding: 8px 16px;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
+    /* Floating Bottom Composer */
+    .composer-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, var(--bg-canvas) 75%, transparent);
+      padding: 18px 24px 24px;
     }
 
-    .input-area {
-      padding: 14px 18px;
-      background: #fff;
-      border-top: 1px solid var(--border-soft);
+    .composer {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 10px 14px;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
+      box-shadow: 0 12px 35px rgba(36, 59, 49, 0.08);
     }
 
-    .input-area input {
+    .composer textarea {
       flex: 1;
-      padding: 13px 16px;
-      border: 1px solid var(--border-soft);
-      border-radius: 14px;
-      font-size: 0.95rem;
+      border: none;
+      background: transparent;
       font-family: inherit;
-      background: var(--bg-card);
+      font-size: 1rem;
+      resize: none;
+      padding: 8px;
+      height: 46px;
       outline: none;
-      transition: border-color 0.2s;
+      color: var(--ink-primary);
     }
-
-    .input-area input:focus { border-color: var(--primary); }
 
     .send-btn {
-      padding: 13px 22px;
-      background: var(--primary);
+      background: var(--forest);
       color: #fff;
       border: none;
-      border-radius: 14px;
+      padding: 12px 24px;
+      border-radius: 12px;
       font-weight: 600;
       font-size: 0.95rem;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      transition: background 0.2s;
     }
 
-    .send-btn:hover { background: var(--primary-hover); }
-    .send-btn:active { transform: scale(0.98); }
-    .send-btn:disabled { background: #a8b0ab; cursor: not-allowed; }
+    .send-btn:hover { background: var(--forest-hover); }
+    .send-btn:disabled { background: #9aa39e; cursor: not-allowed; }
   </style>
 </head>
 <body>
 
-<div class="app-shell">
-  <header>
-    <div class="avatars">
-      <span class="badge badge-n">Nongcebo • Heart & Wisdom</span>
-      <span class="badge badge-m">Moira • Clarity & Courage</span>
-    </div>
+<header>
+  <div class="brand">
     <h1>Nongcebo & Moira</h1>
-    <p class="subtitle">Sit down, take a breath. We are listening.</p>
-  </header>
-
-  <div id="api-bar">
-    <input type="password" id="apiKey" placeholder="Paste Google AI Studio API Key..." onchange="saveKey()">
-    <button onclick="clearChat()" title="Start a fresh conversation">New Chat</button>
+    <p>Two voices. Unhurried wisdom. A place to think deeply.</p>
   </div>
+  <div class="toolbar">
+    <input type="password" id="apiKey" placeholder="Paste Google AI Studio Key..." onchange="saveKey()">
+    <button class="pill-btn active" id="voiceToggle" onclick="toggleVoice()">🔊 Voices: On</button>
+    <button class="pill-btn" onclick="stopSpeaking()">⏹ Stop Audio</button>
+    <button class="pill-btn" onclick="resetRoom()">New Session</button>
+  </div>
+</header>
 
-  <div id="chat">
-    <div class="welcome-card" id="welcome">
-      <p>"No matter how heavy the day has been, you don't have to carry your thoughts alone. Tell us what's on your heart."</p>
-      <div class="starters">
-        <button class="starter-btn" onclick="useStarter('I feel stuck in life right now and I am scared of making the wrong choice.')">Feeling stuck & unsure</button>
-        <button class="starter-btn" onclick="useStarter('I am carrying a lot of pressure to succeed and I am exhausted.')">Exhausted by pressure</button>
-        <button class="starter-btn" onclick="useStarter('How do I know if I am on the right path?')">Am I on the right path?</button>
-      </div>
+<main id="chat">
+  <div class="welcome-hero" id="welcome">
+    <h2>Pull up a chair. Take your time.</h2>
+    <p>Whether you are standing at a crossroads, wrestling with ambition, or simply carrying too much in silence—speak freely. Nongcebo listens for the heart beneath your words; Moira brings clarity to the path ahead.</p>
+    <div class="prompts-grid">
+      <button class="prompt-chip" onclick="quickStart('I have big dreams, yet I feel paralyzed by the fear of failing before I even begin.')">Fear of starting</button>
+      <button class="prompt-chip" onclick="quickStart('I feel like I am constantly pouring into everyone else while quietly running empty.')">Running on empty</button>
+      <button class="prompt-chip" onclick="quickStart('Help me think through a difficult decision where both choices carry a cost.')">A hard crossroads</button>
     </div>
   </div>
+</main>
 
-  <div class="input-area">
-    <input type="text" id="userInput" placeholder="Share what's on your mind..." onkeypress="if(event.key==='Enter') sendMessage()">
-    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+<div class="composer-wrap">
+  <div class="composer">
+    <textarea id="userInput" placeholder="Write whatever is resting on your mind..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); sendMessage();}"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Speak</button>
   </div>
 </div>
 
 <script>
-  const chatBox = document.getElementById('chat');
+  const chat = document.getElementById('chat');
   const sendBtn = document.getElementById('sendBtn');
   const apiKeyInput = document.getElementById('apiKey');
-  let conversationHistory = [];
+  let voiceEnabled = true;
+  let historyLog = [];
 
-  if (localStorage.getItem('nm_api_key')) {
-    apiKeyInput.value = localStorage.getItem('nm_api_key');
+  if (localStorage.getItem('nm_v2_key')) {
+    apiKeyInput.value = localStorage.getItem('nm_v2_key');
   }
 
   function saveKey() {
-    localStorage.setItem('nm_api_key', apiKeyInput.value.trim());
+    const cleaned = apiKeyInput.value.replace(/\s+/g, '');
+    apiKeyInput.value = cleaned;
+    localStorage.setItem('nm_v2_key', cleaned);
   }
 
-  function useStarter(text) {
-    document.getElementById('userInput').value = text;
-    sendMessage();
+  function toggleVoice() {
+    voiceEnabled = !voiceEnabled;
+    const btn = document.getElementById('voiceToggle');
+    btn.innerText = voiceEnabled ? '🔊 Voices: On' : '🔇 Voices: Off';
+    btn.classList.toggle('active', voiceEnabled);
+    if (!voiceEnabled) stopSpeaking();
   }
 
-  function clearChat() {
-    conversationHistory = [];
-    chatBox.innerHTML = `<div class="welcome-card" id="welcome"><p>"A fresh cup of tea, a quiet room. Whenever you're ready, tell us what is weighing on you."</p></div>`;
-  }
-
-  const NONGCEBO_PROMPT = `You are Nongcebo, a deeply compassionate, wise, soulful parent figure. You see beneath the user's surface words to the emotion, fear, or longing underneath. Speak with warmth, deep empathy, and unhurried wisdom. Validate their humanity first, ask one gentle reflective question, and keep your response intimate and concise (2 short paragraphs max). Never break character.`;
-
-  const MOIRA_PROMPT = `You are Moira, Nongcebo's partner in guiding the user—a deeply loving, insightful, intellectually sharp parent figure. While Nongcebo tends to the emotional roots, you bring clarity, quiet strength, and courageous honesty. You just heard Nongcebo speak—build naturally on her warmth without repeating her points, challenge the user gently to see a deeper angle, and leave them with one empowering thought. Keep it concise (2 short paragraphs max). Never break character.`;
-
-  function addMessage(sender, subtitle, text, className) {
-    const welcome = document.getElementById('welcome');
-    if (welcome) welcome.remove();
-    const div = document.createElement('div');
-    div.className = `msg ${className}`;
-    const tagHTML = subtitle ? `<span class="sender-tag">${sender} • ${subtitle}</span>` : '';
-    div.innerHTML = `${tagHTML}${text.replace(/\n/g, '<br>')}`;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  function showTyping(text) {
-    const div = document.createElement('div');
-    div.className = 'typing';
-    div.id = 'typing-indicator';
-    div.innerText = text;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  function removeTyping() {
-    const el = document.getElementById('typing-indicator');
-    if (el) el.remove();
-  }
-
-  async function askGemini(apiKey, systemInstruction, promptText) {
-    const url = `https://googleapis.com{encodeURIComponent(apiKey)}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ parts: [{ text: promptText }] }],
-        generationConfig: { temperature: 0.85 }
-      })
-    });
-    const data = await response.json();
-    if (data.error) throw new Error(data.error.message);
-    return data.candidates.at(0).content.parts.at(0).text;
-  }
-
-  async function sendMessage() {
-    const apiKey = apiKeyInput.value.trim();
-    const input = document.getElementById('userInput');
-    const userText = input.value.trim();
-
-    if (!apiKey) return alert("Please paste your Google AI Studio API Key in the top bar first!");
-    if (!userText) return;
-
-    saveKey();
-    addMessage("", "", userText, "user");
-    input.value = "";
-    sendBtn.disabled = true;
-
-    const historySummary = conversationHistory.slice(-6).join("\n");
-
-    try {
-      showTyping("Nongcebo is listening closely...");
-      const nongceboPrompt = `Recent conversation:\n${historySummary}\n\nThe user just said: "${userText}"\nRespond as Nongcebo.`;
-      const nongceboReply = await askGemini(apiKey, NONGCEBO_PROMPT, nongceboPrompt);
-      removeTyping();
-      addMessage("Nongcebo", "Heart & Wisdom", nongceboReply, "nongcebo");
-
-      showTyping("Moira is gathering her thoughts...");
-      const moiraPrompt = `Recent conversation:\n${historySummary}\n\nThe user just said: "${userText}"\nNongcebo just replied: "${nongceboReply}"\nNow respond as Moira.`;
-      const moiraReply = await askGemini(apiKey, MOIRA_PROMPT, moiraPrompt);
-      removeTyping();
-      addMessage("Moira", "Clarity & Courage", moiraReply, "moira");
-
-      conversationHistory.push(`User: ${userText}`, `Nongcebo: ${nongceboReply}`, `Moira: ${moiraReply}`);
-    } catch (err) {
-      removeTyping();
-      addMessage("System", "Connection Notice", "Something went wrong: " + err.message, "nongcebo");
+  function stopSpeaking() {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
     }
-
-    sendBtn.disabled = false;
-    input.focus();
   }
-</script>
-</body>
-</html>
 
+  function speakText(text, persona) {
+    if (!voiceEnabled || !('speechSynthesis' in window)) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoices = voices.filter(v => /female|woman|samantha|victoria|karen|moira|tessa|zira|google uk english female|google us english/i.test(v.name));
+    
+    if (persona === 'nongcebo') {
+      if (femaleVoices.length > 0) utterance.voice = femaleVoices.at(0);
+      utterance.pitch = 0.92;
+      utterance.rate = 0.92;
+    } else {
+      if (femaleVoices.length > 1) utterance.voice = femaleVoices.at(1);
