@@ -316,7 +316,6 @@
   const apiKeyInput = document.getElementById('apiKey');
   let conversationHistory = [];
 
-  // Load saved API key if present
   if (localStorage.getItem('nm_api_key')) {
     apiKeyInput.value = localStorage.getItem('nm_api_key');
   }
@@ -332,17 +331,92 @@
 
   function clearChat() {
     conversationHistory = [];
-    chatBox.innerHTML = `
-      <div class="welcome-card" id="welcome">
-        <p>"A fresh cup of tea, a quiet room. Whenever you're ready, tell us what is weighing on you."</p>
-      </div>`;
+    chatBox.innerHTML = `<div class="welcome-card" id="welcome"><p>"A fresh cup of tea, a quiet room. Whenever you're ready, tell us what is weighing on you."</p></div>`;
   }
 
-  const NONGCEBO_PROMPT = `You are Nongcebo, a deeply compassionate, wise, soulful parent figure. 
-Your role in this home: You see beneath the user's surface words to the emotion, fear, or longing underneath. You speak with warmth, poetic clarity, deep empathy, and unhurried wisdom—like a parent who has lived through storms and knows how to hold space without judging. 
-Guidelines:
-- Validate their humanity first before offering perspective.
-- Ask one gentle, reflective question or offer a grounding truth that makes them feel truly seen.
-- Keep your response thoughtful, intimate, and concise (2 short paragraphs max). Never sound robotic or generic.`;
+  const NONGCEBO_PROMPT = `You are Nongcebo, a deeply compassionate, wise, soulful parent figure. You see beneath the user's surface words to the emotion, fear, or longing underneath. Speak with warmth, deep empathy, and unhurried wisdom. Validate their humanity first, ask one gentle reflective question, and keep your response intimate and concise (2 short paragraphs max). Never break character.`;
 
-  const MOIRA_PROMPT = `You are Moira, Nongcebo's partner in guiding the user—a deeply loving, insightful, intellectually sharp parent figure.
+  const MOIRA_PROMPT = `You are Moira, Nongcebo's partner in guiding the user—a deeply loving, insightful, intellectually sharp parent figure. While Nongcebo tends to the emotional roots, you bring clarity, quiet strength, and courageous honesty. You just heard Nongcebo speak—build naturally on her warmth without repeating her points, challenge the user gently to see a deeper angle, and leave them with one empowering thought. Keep it concise (2 short paragraphs max). Never break character.`;
+
+  function addMessage(sender, subtitle, text, className) {
+    const welcome = document.getElementById('welcome');
+    if (welcome) welcome.remove();
+    const div = document.createElement('div');
+    div.className = `msg ${className}`;
+    const tagHTML = subtitle ? `<span class="sender-tag">${sender} • ${subtitle}</span>` : '';
+    div.innerHTML = `${tagHTML}${text.replace(/\n/g, '<br>')}`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function showTyping(text) {
+    const div = document.createElement('div');
+    div.className = 'typing';
+    div.id = 'typing-indicator';
+    div.innerText = text;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.remove();
+  }
+
+  async function askGemini(apiKey, systemInstruction, promptText) {
+    const url = `https://googleapis.com{encodeURIComponent(apiKey)}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemInstruction }] },
+        contents: [{ parts: [{ text: promptText }] }],
+        generationConfig: { temperature: 0.85 }
+      })
+    });
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.candidates.at(0).content.parts.at(0).text;
+  }
+
+  async function sendMessage() {
+    const apiKey = apiKeyInput.value.trim();
+    const input = document.getElementById('userInput');
+    const userText = input.value.trim();
+
+    if (!apiKey) return alert("Please paste your Google AI Studio API Key in the top bar first!");
+    if (!userText) return;
+
+    saveKey();
+    addMessage("", "", userText, "user");
+    input.value = "";
+    sendBtn.disabled = true;
+
+    const historySummary = conversationHistory.slice(-6).join("\n");
+
+    try {
+      showTyping("Nongcebo is listening closely...");
+      const nongceboPrompt = `Recent conversation:\n${historySummary}\n\nThe user just said: "${userText}"\nRespond as Nongcebo.`;
+      const nongceboReply = await askGemini(apiKey, NONGCEBO_PROMPT, nongceboPrompt);
+      removeTyping();
+      addMessage("Nongcebo", "Heart & Wisdom", nongceboReply, "nongcebo");
+
+      showTyping("Moira is gathering her thoughts...");
+      const moiraPrompt = `Recent conversation:\n${historySummary}\n\nThe user just said: "${userText}"\nNongcebo just replied: "${nongceboReply}"\nNow respond as Moira.`;
+      const moiraReply = await askGemini(apiKey, MOIRA_PROMPT, moiraPrompt);
+      removeTyping();
+      addMessage("Moira", "Clarity & Courage", moiraReply, "moira");
+
+      conversationHistory.push(`User: ${userText}`, `Nongcebo: ${nongceboReply}`, `Moira: ${moiraReply}`);
+    } catch (err) {
+      removeTyping();
+      addMessage("System", "Connection Notice", "Something went wrong: " + err.message, "nongcebo");
+    }
+
+    sendBtn.disabled = false;
+    input.focus();
+  }
+</script>
+</body>
+</html>
+
